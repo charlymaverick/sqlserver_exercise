@@ -1,96 +1,19 @@
+Se realiza consultas SQL de una base de datos sacada desde https://www.kaggle.com/datasets/imakash3011/customer-personality-analysis?utm_medium=social&utm_campaign=kaggle-dataset-share&utm_source=facebook&fbclid=IwAR2zuNerkQWZvwPzrKlbUezyUjU0AIFyQgusKQ7cs9Z5MUW6c-EEhi7_Y7U
 
---orden año nacimiento (Year_Birth)
-select *
-from PortfolioProject..marketing_place
-order by 2
+Esta base de datos tiene infomacion acerca de los compradores de una tienda o supermarket, según las consultas SQL realizadas, se obtuvo los siguientes resultados:
 
---Seleccion de datos que vamos a usar
-Select ID,Year_Birth,Marital_Status
-from PortfolioProject..marketing_place
-order by 1,2
+-La mayoría de compradores son personas casadas
+-Las personas solteras son las que mas han interpuesto quejas, sin embargo no hay mucha diferencia entre los casados y los de unión libre
+-Los maximos compradores en vinos,carnes,dulces y pescado son casados
+-Los "Cycle" son los que mas fruta consumen
+-Las personas nacidas en 1975 son los que mas dulces compran
+-La mayoria de compras se realizan por internet
+-La posibilidad de compra despues de haberse visitado la pagina web es de un 73%
+-La promoción de tienda o supermarket, fue la campaña numero 3 y la menos tomada fue la numero 2
+-Las personas de estado civil "Cycle", fueron los mas decididos a tomar una campaña de promoción la cual fue la numero 3 con un porcentaje de 95% de aceptación.
 
---Recuento de datos segun es estado civil(Marital_Status)
-Select Marital_Status,COUNT(*) as Total
-from PortfolioProject..marketing_place
-group by Marital_Status
-order by Total desc
-
---Vamos a revisar las quejas de las personas casadas
-Select Marital_Status,sum(complain)
-from PortfolioProject..marketing_place
-Group by Marital_Status
-
---Vamos a revisar las quejas filtrado por estado civil
-Select Marital_Status,sum(complain) as quejas_total
-from PortfolioProject..marketing_place
-Group by Marital_Status
-order by quejas_total desc
-
---Reconocimiento de max clientes en vino,fruta,carne,dulces
-select Marital_Status,sum(MntWines) as vino 
-from PortfolioProject..marketing_products
-group by Marital_Status
-order by vino desc
-
-select Marital_Status,MntFishProducts as frutas 
-from PortfolioProject..marketing_products
-group by Marital_Status
-order by frutas desc
-
-select Marital_Status,sum(MntMeatProducts) as carne
-from PortfolioProject..marketing_products
-group by Marital_Status
-order by carne desc
-
-select Marital_Status,sum(MntFishProducts) as pescado
-from PortfolioProject..marketing_products
-group by Marital_Status
-order by pescado desc
-
-select Marital_Status,sum(MntSweetProducts) as dulces
-from PortfolioProject..marketing_products
-group by Marital_Status
-order by dulces desc
-
-select Year_Birth,sum(MntSweetProducts) as dulces
-from PortfolioProject..marketing_products
-group by Year_Birth
-order by dulces desc
-
-select Year_Birth, SUM(MntMeatProducts) as carne, SUM(MntFishProducts) AS pescado,
-    (select SUM(MntMeatProducts) + SUM(MntFishProducts) as total
-     from PortfolioProject..marketing_products as innerTable
-     where innerTable.Year_Birth = outerTable.Year_Birth
-     group by innerTable.Year_Birth
-    ) as total
-from PortfolioProject..marketing_products as outerTable
-group by Year_Birth
-order by total desc;
-
-
-
-
-
---consulta de compras segun el lugar
-select Marital_Status,sum(NumWebPurchases)as pag_web,sum(NumCatalogPurchases) as catalogo,sum(NumStorePurchases) as tiendas
-from PortfolioProject..marketing_place
-group by Marital_Status
-
-select sum(NumWebPurchases)/sum(NumWebVisitsMonth) *100 as resultado
-from PortfolioProject..marketing_place
-
---consulta de promociones
-select sum(AcceptedCmp1) as camp1,sum(AcceptedCmp2) as camp2,sum(AcceptedCmp3) as camp3,sum(AcceptedCmp4) as camp4,sum(AcceptedCmp5) as camp5
-from PortfolioProject..marketing_place
-
-select Marital_Status,sum(AcceptedCmp1) as camp1,sum(AcceptedCmp2) as camp2,sum(AcceptedCmp3) as camp3,sum(AcceptedCmp4) as camp4,sum(AcceptedCmp5) as camp5
-from PortfolioProject..marketing_place
-group by Marital_Status
-
---consulta fecha de alta clientes
-select Dt_Customer,count(*) as total
-from PortfolioProject..marketing_place 
-group by Dt_Customer
-order by total 
+...Al tener en cuenta que las personas casadas son las que mas compran y son clientes de preferencia, es importante realizar promociones referentes al concepto de familia, ya que podrían verse mas atraídos
+..Es importante la buena, impresión y el buen servicio en las tiendas, ya que la mayoría de compras se hace presencial.
+..Si se quiere aumentar las compras por internet y superar ese 73%, seria interesante la aplicación de descuento por compra online. manejar un domicilio hasta casa y/o aplicar descuentos de productos que de tal ves no sean de rápida rotación, para que sean llamativos a los compradores online.
 
 
